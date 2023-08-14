@@ -1,13 +1,19 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
+import HomePage from "./HomePage";
+import { Home } from "@material-ui/icons";
 
 
 // functional component
-function App() {
-  return <h1>Testing React Code</h1>;
+const App = () => {
+  return (
+    <HomePage />
+  );
 }
 
 
+// 
+{/* <h1>Testing React Code by : {name} </h1> */}
 // class component
 // export default class App extends Component {
 //   constructor(props) {
