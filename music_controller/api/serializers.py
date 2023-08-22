@@ -1,4 +1,4 @@
-# serializers will translate the models in python code into a JSON format response.
+# serializers will translate the models in python code into a JSON format response.(dictionary format)
 
 from rest_framework import serializers
 from .models import Room

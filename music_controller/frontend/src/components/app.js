@@ -7,7 +7,10 @@ import { Home } from "@material-ui/icons";
 // functional component
 const App = () => {
   return (
-    <HomePage />
+
+    <div className='center-content'>
+      <HomePage/>
+    </div>
   );
 }
 

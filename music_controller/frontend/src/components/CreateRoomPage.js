@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -14,6 +14,7 @@ const CreateRoomPage = () => {
   const defaultVotes = 2;
   const [guestCanPause, setGuestCanPause] = useState(true);
   const [votesToSkip, setVotesToSkip] = useState(defaultVotes);
+  const navigate = useNavigate();
 
   const data = {
     guestCanPause,
@@ -39,10 +40,13 @@ const CreateRoomPage = () => {
     };
     fetch('/api/create-room', requestOptions)
       .then((response) => response.json())
-      .then((data) => console.log(data));
+      .then((data) => {
+        console.log(data)
+        navigate('/room/'+ data.code)});
   }
   return ( 
     // <p>This is the Create Room Page.</p> 
+    // <div className='center-content'>
     <Grid container spacing={1}>
       <Grid item xs={12} align="center">
         <Typography component="h4" variant="h4">
@@ -52,7 +56,7 @@ const CreateRoomPage = () => {
       <Grid item xs={12} align="center">
         <FormControl component="fieldset">
           {/* fieldset is a container specifically for form fields */}
-          <FormHelperText component="div" align="center">
+          <FormHelperText>
             {/* <div align="center"> */}
               {/* div is a container for generic layouts. they can contain anything */}
               Guest Control of Playback State
@@ -102,6 +106,7 @@ const CreateRoomPage = () => {
         </Button>
       </Grid>
     </Grid>
+  // </div>
   );
 }
  
