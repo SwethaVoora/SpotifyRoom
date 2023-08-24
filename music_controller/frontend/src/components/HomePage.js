@@ -67,6 +67,9 @@ const HomePage = () => {
     );
   }
 
+  const clearRoomCode = () => {
+    setRoomCode(null);
+  }
 
   return (
     // <h1> This is the Home Page.</h1>
@@ -76,7 +79,7 @@ const HomePage = () => {
       {/* <Route path="/" element={<RenderHomePage/>} /> */}
       <Route path="/join" element={<RoomJoinPage/>} />
       <Route path="/create" element={<CreateRoomPage/>} />
-      <Route path="/room/:roomCode" element={<Room/>}/>
+      <Route path="/room/:roomCode" element={<Room leaveRoomCallback={clearRoomCode}/>}/>
     </Routes> 
   </Router>
   );
