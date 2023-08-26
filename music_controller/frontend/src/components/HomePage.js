@@ -75,7 +75,7 @@ const HomePage = () => {
     // <h1> This is the Home Page.</h1>
     <Router>
     <Routes>
-      <Route path="/" element={(roomCode == null) ? <RenderHomePage/> : (<Navigate to={`/room/${roomCode}`}/>)} />
+      <Route exact path="/" element={(roomCode == null) ? <RenderHomePage/> : (<Navigate to={`/room/${roomCode}`}/>)} />
       {/* <Route path="/" element={<RenderHomePage/>} /> */}
       <Route path="/join" element={<RoomJoinPage/>} />
       <Route path="/create" element={<CreateRoomPage/>} />
