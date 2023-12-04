@@ -10,41 +10,55 @@ const Room = ({ leaveRoomCallback }) => {
     guestCanPause: false,
     isHost: false,
     showSettings: false,
+    spotifyAuthenticated: false,
   });
 
-  // console.log(roomCode)
   const { roomCode } = useParams();
   const navigate = useNavigate();
 
-  const getRoomDetails = () => {
-    // http://127.0.0.1:8000/api/get-room?code=ABCDEF
-    return (fetch("/api/get-room" + "?code=" + roomCode)
-      .then((response) => {
+  useEffect(() => {
+    const getRoomDetails = async () => {
+      try {
+        const response = await fetch("/api/get-room" + "?code=" + roomCode);
         if (!response.ok) {
           leaveRoomCallback();
-          navigate("/");
+          history.push("/");
         }
-        return response.json();
-      })
-      .then((data) => {
-        // console.log("Before Update")
+        const data = await response.json();
         setRoomDetails({
           votesToSkip: data.votes_to_skip,
           guestCanPause: data.guest_can_pause,
           isHost: data.is_host,
         });
-
-        // console.log("After Update")
-      })
-      .catch((error) => {
+        if (data.is_host) {
+          await authenticateSpotify();
+        }
+      } catch (error) {
         console.error("Error getting room details:", error);
-      })
-  );
-  };
+      }
+    };
 
-  useEffect(() => {
-    getRoomDetails()
-  }, []);
+    getRoomDetails();
+  }, [roomCode, navigate, leaveRoomCallback]);
+
+  const authenticateSpotify = async () => {
+    try {
+      const response = await fetch("/spotify/is-authenticated");
+      const data = await response.json();
+      setRoomDetails((prevDetails) => ({
+        ...prevDetails,
+        spotifyAuthenticated: data.status,
+      }));
+      console.log(data.status);
+      if (!data.status) {
+        const authUrlResponse = await fetch("/spotify/get-auth-url");
+        const authUrlData = await authUrlResponse.json();
+        window.location.replace(authUrlData.url);
+      }
+    } catch (error) {
+      console.error("Error authenticating Spotify:", error);
+    }
+  };
 
   const leaveButtonPressed = () => {
     console.log("Leave Button Pressed");
@@ -115,10 +129,8 @@ const Room = ({ leaveRoomCallback }) => {
                     isHost: data.is_host,
                   });
                 });
-              updateShowSettings(false)
-              
-              }
-            }
+              updateShowSettings(false);
+            }}
           >
             Close
           </Button>
@@ -127,7 +139,7 @@ const Room = ({ leaveRoomCallback }) => {
     );
   };
 
-  // console.log(roomDetails.showSettings);//debugging purpose
+  // console.log("Debugging Purpose: 1: ", roomDetails.guestCanPause); //debugging purpose
 
   return roomDetails.showSettings ? (
     <RenderSettings />
