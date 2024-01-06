@@ -13,3 +13,9 @@ SpotifyRoom is a collaborative music listening web application built with Django
 **Backend**: Django, Django Rest Framework
 **Authentication**: Spotify OAuth, JWT (JSON Web Tokens)
 **Third-party API**: Spotify Web API
+
+
+## Usage
+- **Creating a Room**: Sign in with Spotify, create a room, and invite others by sharing the room code.
+- **Joining a Room**: Enter a room code to join an existing room.
+- **Room Controls**: As a host, control music playback and room settings. As a participant, suggest tracks and vote on skipping tracks.
